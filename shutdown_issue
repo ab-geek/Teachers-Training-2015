@@ -1,0 +1,24 @@
+
+
+Following these websites information: http://www.freedesktop.org/software/polkit/docs/0.105/pklocalauthority.8.html and https://bugs.launchpad.net/ubuntu/+source/policykit/+bug/1033305 Seems to have resolved our problems with the lightdm shutdown button not working for all users on Ubuntu 12.04.3 LTS (GNU/Linux 3.11.6-031106-generic x86_64)
+
+vim /var/lib/polkit-1/localauthority/20-org.d/usershutdown.pkla
+
+Then add the following lines to the file.
+
+[Allow Shutdown]
+Identity=unix-user:*;unix-group:*
+Action=org.freedesktop.consolekit.system.stop-multiple-users
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes
+
+[Allow Restart]
+Identity=unix-user:*;unix-group:*
+Action=org.freedesktop.consolekit.system.restart-multiple-users
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes
+
+Then enter service lightdm restart and/or a reboot of the machine is needed. Tried before logging into the machine and then again after someone logged in.
+
